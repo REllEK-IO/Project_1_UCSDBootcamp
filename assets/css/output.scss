@@ -1,5 +1,9 @@
+$dark-blue: #263238;
+$white: #eceff1;
+$blue-grey: #37474f;
+
 h1 {
-	background: #263238;
+	background: $dark-blue;
 	color: #eceff1;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -13,13 +17,14 @@ body {
 	background: url("https://img.clipartfox.com/6869c387dfdd6128338287e6d3afba87_wood-panel-hd-background-bible-clipart-wood-panel_1600-1200.jpeg");
 }
 
+
 #maincontent {
 	background: #eceff1;
 	margin-top: 0px;
 	width: 60%;
 	margin: 0 auto;
 	height: 800px;
-	color: $blue-grey;
+	color: #37474f;
 }
 
 footer {
