@@ -1,15 +1,40 @@
 h1 {
-  background: #444444;
+  background: #255352;
+  background-size: 40%;
   color: #eceff1;
   margin-top: 0px;
   margin-bottom: 0px;
   text-align: center;
   height: 100px;
   padding-top: 15px;
-  font-family: GillSans, Calibri, Trebuchet, sans-serif; }
+  font-family: GillSans, Calibri, Trebuchet, sans-serif; 
+  width: 100%;
+  margin: 0 auto;
+}
 
 body {
-  background: url("https://img.clipartfox.com/6869c387dfdd6128338287e6d3afba87_wood-panel-hd-background-bible-clipart-wood-panel_1600-1200.jpeg"); }
+  background: url("https://images3.alphacoders.com/792/79299.jpg"); 
+}
+
+#cat-image {
+      /* The image used */
+    background-image: url("https://files.slack.com/files-pri/T3G1R4E1F-F4FNMQ3DZ/pasted_image_at_2017_03_08_08_48_pm.png");
+
+    /* Set a specific height */
+    height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60%;
+    margin: 0 auto;
+    background-size: 60%;
+    margin-top: 0px;
+    
+
+}
 
 #maincontent {
   background: #eceff1;
@@ -17,7 +42,10 @@ body {
   width: 60%;
   margin: 0 auto;
   height: 800px;
-  color: #37474f; }
+  color: #37474f; 
+  opacity: 0.8;
+}
+
 
 footer {
   color: #eceff1;
