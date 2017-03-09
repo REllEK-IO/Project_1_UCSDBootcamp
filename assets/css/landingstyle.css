@@ -1,0 +1,19 @@
+
+body {
+	background: url("https://files.slack.com/files-pri/T3G1R4E1F-F4F38L6GG/trapkitty.jpg");
+	background-size: 100%
+}
+
+
+h1 {
+	float: right;
+	padding-right: 100px;
+	padding-top: 500px;
+	font-size: 85px;
+	color: #ad2323;
+	   -webkit-text-fill-color: #ad2323;
+   		-webkit-text-stroke-width: 2px;
+   		-webkit-text-stroke-color: #ad2323;
+	letter-spacing: 5px;
+	font-family: 'Londrina Shadow', cursive;
+}
