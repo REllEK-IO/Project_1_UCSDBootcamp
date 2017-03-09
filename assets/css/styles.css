@@ -1,28 +1,46 @@
 h1 {
-	background: #263238;
-	color: #eceff1;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	text-align: center;
-	height: 100px;
-	padding-top: 15px;
-    font-family: GillSans, Calibri, Trebuchet, sans-serif;
-}
+  background: #444444;
+  color: #eceff1;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  text-align: center;
+  height: 100px;
+  padding-top: 15px;
+  font-family: GillSans, Calibri, Trebuchet, sans-serif; }
 
 body {
-	background: url("https://img.clipartfox.com/6869c387dfdd6128338287e6d3afba87_wood-panel-hd-background-bible-clipart-wood-panel_1600-1200.jpeg");
-}
+  background: url("https://img.clipartfox.com/6869c387dfdd6128338287e6d3afba87_wood-panel-hd-background-bible-clipart-wood-panel_1600-1200.jpeg"); }
 
 #maincontent {
-	background: #eceff1;
-	margin-top: 0px;
-	width: 60%;
-	margin: 0 auto;
-	height: 800px;
-	color: $blue-grey;
-}
+  background: #eceff1;
+  margin-top: 0px;
+  width: 60%;
+  margin: 0 auto;
+  height: 800px;
+  color: #37474f; }
 
 footer {
-	color: #eceff1;
-	text-align: center;
-}
+  color: #eceff1;
+  text-align: center; }
+
+.testColorsBox {
+  width: 100px;
+  height: 100px;
+  display: inline-block; }
+
+.brown {
+  background-color: #965927; }
+
+.darkbrown {
+  background-color: #603921; }
+
+.beige {
+  background-color: #CBB59F; }
+
+.bluegrey {
+  background-color: #5681A6; }
+
+.black {
+  background-color: black; }
+
+/*# sourceMappingURL=styles.css.map */

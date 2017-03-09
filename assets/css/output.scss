@@ -1,9 +1,12 @@
 $dark-blue: #263238;
-$white: #eceff1;
-$blue-grey: #37474f;
+$brown: #965927;
+$darkbrown: #603921;
+$beige: #CBB59F;
+$bluegrey: #5681A6;
+$thiscolor: #444444;
 
 h1 {
-	background: $dark-blue;
+	background: $thiscolor;
 	color: #eceff1;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -30,4 +33,30 @@ body {
 footer {
 	color: #eceff1;
 	text-align: center;
+}
+
+.testColorsBox{
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+}
+
+.brown{
+	background-color: $brown;
+}
+
+.darkbrown{
+	background-color: $darkbrown;
+}
+
+.beige{
+	background-color: $beige;
+}
+
+.bluegrey{
+	background-color: $bluegrey;
+}
+
+.black{
+	background-color: black;
 }
