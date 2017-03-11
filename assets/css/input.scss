@@ -1,0 +1,62 @@
+$dark-blue: #263238;
+$brown: #965927;
+$darkbrown: #603921;
+$beige: #CBB59F;
+$bluegrey: #5681A6;
+$thiscolor: #444444;
+
+h1 {
+	background: $thiscolor;
+	color: #eceff1;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	text-align: center;
+	height: 100px;
+	padding-top: 15px;
+    font-family: GillSans, Calibri, Trebuchet, sans-serif;
+}
+
+body {
+	background: url("https://img.clipartfox.com/6869c387dfdd6128338287e6d3afba87_wood-panel-hd-background-bible-clipart-wood-panel_1600-1200.jpeg");
+}
+
+
+#maincontent {
+	background: #eceff1;
+	margin-top: 0px;
+	width: 60%;
+	margin: 0 auto;
+	height: 800px;
+	color: #37474f;
+}
+
+footer {
+	color: #eceff1;
+	text-align: center;
+}
+
+.testColorsBox{
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+}
+
+.brown{
+	background-color: $brown;
+}
+
+.darkbrown{
+	background-color: $darkbrown;
+}
+
+.beige{
+	background-color: $beige;
+}
+
+.bluegrey{
+	background-color: $bluegrey;
+}
+
+.black{
+	background-color: black;
+}
