@@ -1,10 +1,9 @@
-h1 {
-  background: #255352;
+header {
+  background: #21455c;
   background-size: 40%;
   color: #eceff1;
   margin-top: 0px;
   margin-bottom: 0px;
-  text-align: center;
   height: 100px;
   padding-top: 15px;
   font-family: GillSans, Calibri, Trebuchet, sans-serif; 
@@ -12,49 +11,81 @@ h1 {
   margin: 0 auto;
 }
 
+h1 {
+  float: left;
+  margin-left: 150px;
+  color: #fbfdef;
+  font-family: Gloria Hallelujah, cursive;
+  letter-spacing: 1px;
+  font-size: 48px;
+  margin-top: 10px;
+}
+
+h2 {
+  float: right;
+  color: #fbfdef;
+  margin-right: 100px;
+  font-family: Gloria Hallelujah, cursive;
+  font-size: 36px;
+}
+
 body {
-  background: url("https://images3.alphacoders.com/792/79299.jpg"); 
+  background: url("http://slhando.com/i/2017/01/rustic-wood-wallpaper-background.jpg"); 
+  background-size: 100%;
 }
 
 #cat-image {
-      /* The image used */
-    background-image: url("https://files.slack.com/files-pri/T3G1R4E1F-F4FNMQ3DZ/pasted_image_at_2017_03_08_08_48_pm.png");
-
-    /* Set a specific height */
-    height: 500px; 
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 60%;
-    margin: 0 auto;
-    background-size: 60%;
-    margin-top: 0px;
-    
-
+  float: left;
+  height: 350px; 
+  width: 300px;
+  background-size: 100%;
+  margin-top: 50px;
+  border-radius: 10px;
+  margin-left: 60px; 
 }
 
 #maincontent {
-  background: #eceff1;
+  background: #fbfdef;
   margin-top: 0px;
   width: 60%;
   margin: 0 auto;
-  height: 800px;
   color: #37474f; 
-  opacity: 0.8;
+}
+
+#info {
+  border: solid 1px black;
+  float: right;
+  height: 300px;
+  width: 300px;
+  margin: 60px 60px 0px 0px;
+}
+
+#user-input {
+  float: none;
+  display: inline-block;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+#player {
+  margin: ;
+  float: none;
+}
+
+#table {
+  float:middle;
+  clear: all;
+  text-align: center;
+  margin: 0 auto;
 }
 
 
 footer {
   color: #eceff1;
-  text-align: center; }
+  text-align: center; 
+}
 
-.testColorsBox {
-  width: 100px;
-  height: 100px;
-  display: inline-block; }
 
 .brown {
   background-color: #965927; }
