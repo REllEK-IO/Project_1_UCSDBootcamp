@@ -13,15 +13,23 @@ var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=9
 */
 
 var Songlist = function(data){
-	this.songName = data.toptracks.tracks[0].name;
-	this.artistName = data.toptracks.tracks[0].artist.name;
-	this.image = data.toptracks.tracks[0].image[1].#text;
+	this.songName = data.toptracks.track[0].name;
+	this.artistName = data.toptracks.track[0].artist.name;
+	this.image = data.toptracks.track[0].image[1]["#text"];
+
+	this.songTable = $("<table>");
+	this.songTableLabels = $("<tr>").append($("<td>").html("Icon"))
+									.append($("<td>").html("Artist"))
+									.append($("<td>").html("Song Name"));
+
 	console.log(this.songName + " " + this.artistName + " " + this.image);
 }
 
+
+
 $(document).ready(function(){
 	$.ajax({
-		url: queryURL, 
+		url: artistURL, 
 		method: 'GET'
 	}).done(function(data){
 		Songlist(data);
