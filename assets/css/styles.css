@@ -1,32 +1,106 @@
-h1 {
-  background: #444444;
+header {
+  background: #21455c;
+  background-size: 40%;
   color: #eceff1;
   margin-top: 0px;
   margin-bottom: 0px;
-  text-align: center;
   height: 100px;
   padding-top: 15px;
-  font-family: GillSans, Calibri, Trebuchet, sans-serif; }
+  width: 100%;
+  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.35);
+}
+
+h1 {
+  float: left;
+  margin-left: 20%;
+  color: #fbfdef;
+  font-family: 'Special Elite', cursive;
+  letter-spacing: 1px;
+  font-size: 52px;
+  margin-top: 13px;
+}
+
+h2 {
+  float: right;
+  color: #fbfdef;
+  margin-right: 100px;
+  font-family: 'Special Elite', cursive;
+  font-size: 36px;
+}
 
 body {
-  background: url("https://img.clipartfox.com/6869c387dfdd6128338287e6d3afba87_wood-panel-hd-background-bible-clipart-wood-panel_1600-1200.jpeg"); }
+  background: url("http://i.imgur.com/U46Na3e.jpg"); 
+  background-size: 100%;
+}
 
 #maincontent {
-  background: #eceff1;
+  background: #fbfdef;
   margin-top: 0px;
-  width: 60%;
+  width: 65%;
   margin: 0 auto;
-  height: 800px;
-  color: #37474f; }
+  color: #37474f;
+  margin-top: 80px;
+  box-shadow: 0 4px 16px 10px rgba(0, 0, 0, 0.35), 0 4px 16px 10px rgba(0, 0, 0, 0.35);
+  font-family: 'Athiti', sans-serif;
+  color: black;
+}
+
+#cat-image {
+  float: left;
+  height: auto; 
+  width: 35%;
+  background-size: 100%;
+  margin-top: 40px;
+  border-radius: 10px;
+  margin-left: 65px; 
+}
+
+#info {
+  float: right;
+  height: 380px;
+  width: 44%;
+  margin: 70px 90px 0px 0px;
+  font-size: 22px;
+  text-align: center;
+}
+
+#paw {
+  height: 155px;
+  width: 155px;
+}
+
+#user-input {
+  clear: both;
+  display: block;
+  text-align: center;
+}
+
+iframe {
+  width: 85%;
+  height: 404px;
+  display: block;
+  margin: 0 auto;
+}
+
+#track-table {
+  display: inline-block;
+  margin-bottom: 40px;
+}
 
 footer {
-  color: #eceff1;
-  text-align: center; }
-
-.testColorsBox {
-  width: 100px;
-  height: 100px;
-  display: inline-block; }
+  color: #fbfdef;
+  text-align: center;
+  background: #21455c;
+  width: 65%; 
+  margin: 0 auto;
+  box-shadow: 0 4px 16px 0px rgba(0, 0, 0, 0.35), 0 4px 16px 0px rgba(0, 0, 0, 0.35);
+  font-family: 'Special Elite', cursive;
+}
 
 .brown {
   background-color: #965927; }
