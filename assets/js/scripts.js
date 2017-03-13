@@ -1,3 +1,8 @@
+//Object
+var Song = function(){
+	
+}
+
 var createSearchResults = function(stuff){
 	console.log(queryURL);
 }

@@ -1,5 +1,3 @@
-'use strict';
-
 (function ($) {
     /**
      * Callback function that render the calculate elements on ret.
@@ -16,7 +14,7 @@
      *
      * Possible elements are: 'artist', 'album' adn 'track'.
      */
-        moduleList = [],
+        moduleList = ["track", "artist"],
 
     /**
      * Auxiliar moduleList struct that keeps track of what modules have been
@@ -126,6 +124,8 @@
             key,
             optionSet;
 
+        console.log(baseUrl);
+
         for (key in moduleList) {
             if (['artist', 'album', 'track'].indexOf(moduleList[key]) >= 0) {
                 globalResponse = response;
@@ -148,16 +148,24 @@
 
     $.widget("custom.catcomplete", $.ui.autocomplete, {
         _renderMenu: function (ul, items) {
+            if(items.length > 15){
+                var tempItems = [];
+
+                for(var i = items.length - 15; i < items.length; i++){
+                    tempItems.push(items[i]);
+                }
+                items = tempItems;
+            }
+
             var that = this,
                 currentCategory = "";
-                ul.empty();
             $.each(items, function (index, item) {
                 if (item.category !== currentCategory) {
                     var t = item.category.charAt(0).toUpperCase() + item.category.slice(1) + 's';
                     ul.append("<li class='ui-autocomplete-category " + item.category + "'>" + t + "</li>");
                     currentCategory = item.category;
                 }
-                that._renderItem(ul, item);
+                that._renderItemData(ul, item);
             });
         }
     });
@@ -211,3 +219,67 @@
         this.catcomplete(acOption);
     };
 }(jQuery));
+
+
+(function ($) {
+    // 'use strict';
+
+    function handleAutocompleteChoice(e, ui) {
+        var d = ui.item;
+
+        if (null !== d) {
+            $('#value').html(d.value);
+            $('#category').html(d.category);
+            $('#artist').html(d.artist);
+            $('#musicTitle').html(d.musicTitle);
+            $('#label').html('<pre>' + d.label + '</pre>');
+            $('#data').html(d.data);
+            $('#lastfm').html(JSON.stringify(d.lastfm));
+        }
+    }
+
+    function bindLfmAutocomplete() {
+        // Autocomplete options.
+        var acOptions = {
+            callback: handleAutocompleteChoice,
+            modules: [],
+            apiKey: '932e4c349b7caae7626ea15a10649e1f'
+        };
+
+        // See what modules, among ['artist', 'album', 'track'], are checked.
+        var modules = [];
+        $('.music-type').each(function(key, value) {
+            if ($(this).is(':checked')) {
+                modules.push($(this).attr('id'));
+            }
+
+            //Additional check
+            if(modules.length >= 3){
+                modules = ['artist', 'album', 'track'];
+            }
+        });
+        acOptions.modules = modules;
+
+        // if lfmAutocomplete is already placed, remove it.
+        if ($('#search').data('custom-lfmAutocomplete')) {
+            $('#search').lfmAutocomplete("destroy");
+            $('#search').removeData('custom-lfmAutocomplete');
+        }
+
+        // bind autocomplete.
+        // $('#search').off();
+        $('#search').lfmComplete(acOptions);
+    }
+
+    $(document).ready(function() {
+        $('.music-type').on('change', function(e) {
+            // rebind lfmAutocomplete when checkbox items changes.
+            bindLfmAutocomplete();
+        });
+
+        // First time it binds lfmAutocomplete.
+        bindLfmAutocomplete();
+    });
+}(jQuery));
+
+
