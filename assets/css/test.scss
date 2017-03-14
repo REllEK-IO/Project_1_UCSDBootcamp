@@ -1,0 +1,28 @@
+$coolgray: #262626;
+
+.table{
+	border: 1px solid grey;
+	border-radius: 10px;
+	width: 90%;
+	margin-left: 5%;
+}
+
+.hidden{
+	display: none;
+}
+
+.center{
+	margin: 0 auto;
+}
+
+.loading{
+	height: 370px;
+    width: 370px;
+    margin-left: 140px;
+}
+
+#player{
+	height: 390px;
+    width: 640px;
+    background-color: $coolgray;
+}

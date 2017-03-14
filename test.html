@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<!-- Style Sheets -->
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/test.css">
+	<link href="assets/css/lastfm.css" media="screen" rel="stylesheet" type="text/css">
+
+	<title>Testing Code Base</title>
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="assets/js/dependencies/lodash.js"></script>
+	<script type="text/javascript" src="assets/js/dependencies/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/dependencies/jquery-ui.js"></script>
+	<script type="text/javascript" src="assets/js/lastFM.js"></script>
+	<script type="text/javascript" src="assets/js/youtubePlayer.js"></script>
+</head>
+<body>
+	<header>
+		<h1>Acoustic Kitty</h1>
+		<h2>About</h2>
+	</header>
+
+	<div id = "maincontent">
+		<br>
+		<div class="center" id="player">
+			<img class="loading center" src="assets/images/loading.gif">
+		</div>
+		<div id="songSearch">
+			<form>
+				<div class="form-group">
+					<div class="form-group">
+                        <input type="search" class="form-control" placeholder="Artist, album or track..." name="search" id="search"/>
+                    </div>
+                    <div class="checkbox">
+                      <label><input type="checkbox" value="" id="artist" class="music-type" checked="checked"/> Artist</label>
+                    </div>
+                    <div class="checkbox">
+                      <label><input type="checkbox" value="" id="album" class="music-type" checked="checked"/> Album</label>
+                    </div>
+                    <div class="checkbox">
+                     <label><input type="checkbox" value="" id="trach" class="music-type"/> Track</label>
+				</div>
+			</form>
+			
+			<button class="btn btn-primary" id="submit">Search</button>
+			<button class="btn btn-primary" id="mute">Mute</button>
+			<button class="btn btn-primary" id="load">Load</button>
+			<table class="table hidden" id="resultArea">
+				<tr>
+					<th>
+						Icon
+					</th>
+					<th>
+						Artist
+					</th>
+					<th>
+						Song
+					</th>
+				</tr>
+			</table>
+		</div>
+		
+		<table class="table" id="playlistTable">
+			<tr>
+				<th>
+					Title
+				</th>
+				<th>
+					Artist
+				</th>
+				<th>
+					X
+				</th>
+			</tr>
+		</table>
+		<br>
+	</div>
+
+	<footer>Acoustic Kitty 2017 &copy;</footer>
+</body>
+</html>
