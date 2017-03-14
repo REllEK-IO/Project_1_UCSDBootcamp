@@ -114,11 +114,39 @@ th {
   text-align: center;
 }
 
+
+.table {
+  border: 1px solid grey;
+  border-radius: 10px;
+  width: 90%;
+  margin-left: 5%; }
+
+.hidden {
+  display: none; }
+
+.center {
+  margin: 0 auto; }
+
+.loading {
+  width: 54%;
+  height: auto;
+  margin-left: 23%}
+
+#player {
+  height: auto;
+  width: 80%;
+  background-color: #262626; 
+  display: inline-block;
+  margin-left: 10%;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
 footer {
   color: #fbfdef;
   text-align: center;
   background: #21455c;
-  width: 65%; 
+  width: 100%; 
   margin: 0 auto;
   box-shadow: 0 4px 16px 0px rgba(0, 0, 0, 0.35), 0 4px 16px 0px rgba(0, 0, 0, 0.35);
   font-family: 'Special Elite', cursive;
