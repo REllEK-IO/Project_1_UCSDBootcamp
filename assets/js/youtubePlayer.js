@@ -13,6 +13,8 @@ var Song = function(name, artist){
 			search = "Acoustic Kitty"
 		}
 
+		//https://www.googleapis.com/youtube/v3/search?&q=cat&part=snippet&type=video&key=AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY
+
 		var apiKey = "AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY";
 		var queryURL = "https://www.googleapis.com/youtube/v3/search?" + 
 		//Search query
@@ -24,6 +26,9 @@ var Song = function(name, artist){
         "&videoEmbeddable=true" +
         "&videoSyndicated=true" +
         "&key=" + apiKey;
+
+        console.log(queryURL);
+
 		$.ajax({
 			url: queryURL, 
 			method: 'GET'
@@ -173,11 +178,18 @@ var loadPlaylist = function(playlistVal){
 $(document).ready(function(){
 	
 
-	$("#submit").click(searchYoutube)
+	$("#submit").click(function(e){
+		e.preventDefault();
+		searchYoutube();
+	})
 
-	$("#mute").click(mutePlayer);
+	$("#mute").click(function(e){
+		e.preventDefault();
+		mutePlayer();
+	});
 
-	$("#load").click(function(){
+	$("#load").click(function(e){
+		e.preventDefault();
 		loadPlaylist('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
 	});
 	
