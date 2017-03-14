@@ -5,9 +5,12 @@ var playlist = ""
 var Song = function(name, artist){
 	this.songName = name;
 	this.artistName = artist;
+	this.viewCount;
+
+	self = this;
 
 	this.getSongId = function(){
-	var search = this.songName + " Acoustic";
+		var search = this.songName + " Acoustic";
 
 		if(search === ""){
 			search = "Acoustic Kitty"
@@ -25,6 +28,8 @@ var Song = function(name, artist){
         "&type=video" +
         "&videoEmbeddable=true" +
         "&videoSyndicated=true" +
+        "&order=viewCount" +
+        "&topicId=/m/04rlf"
         "&key=" + apiKey;
 
         console.log(queryURL);
@@ -33,12 +38,17 @@ var Song = function(name, artist){
 			url: queryURL, 
 			method: 'GET'
 		}).done(function(response){
-			return response.items[0].id.videoId;
+			$.ajax({
+				url: "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + response.items[0].id.videoId + "&key=AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY", 
+				method: 'GET'
+			}).done(function(data){
+				self.id = response.items[0].id.videoId;
+				self.viewCount = data.items.statistics.viewCount;
+			});
 		});
 	}
 
 	this.id = this.getSongId();
-	
 }
 
 var Playlist = function(){
@@ -176,7 +186,7 @@ var loadPlaylist = function(playlistVal){
 // addPlayer(p);
 
 $(document).ready(function(){
-	
+	var YoutubePlaylist = 
 
 	$("#submit").click(function(e){
 		e.preventDefault();
