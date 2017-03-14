@@ -3,29 +3,51 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Acoustic Kitty</title>
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Special+Elite|Ruluko|Athiti" rel="stylesheet">
+
+	<!-- Style Sheets -->
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="assets/js/dependencies/lodash.js"></script>
+	<script type="text/javascript" src="assets/js/dependencies/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/dependencies/jquery-ui.js"></script>
+	<!-- <script type="text/javascript" src="assets/js/lastFM.js"></script> -->
+	<script type="text/javascript" src="assets/js/youtubePlayer.js"></script>
 </head>
 <body>
-	<h1>Acoustic Kitty</h1>
+	<header>
+		<h1>Acoustic Kitty</h1>
+		<h2>About</h2>
+	</header>
 
 	<div id = "maincontent">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		<div class="testColorsBox black"></div>
-		<div class="testColorsBox bluegrey"></div>
-		<div class="testColorsBox brown"></div>
-		<div class="testColorsBox darkbrown"></div>
-		<div class="testColorsBox beige"></div>
+		<img id = "cat-image" src = "images/catlogo.JPG">
 
+		<div id = "info">
+			<p>Welcome to Acoustic Kitty! Here you can listen to purrfect acoustic versions of your favorite popular songs. Just submit the song title or artist in the search bar and begin listening to your playlist.</p>
+			<img src = "images/paw.JPG" id="paw">
+		</div>
+			
+		<div id = "user-input">
+			<input id = "user-song" placeholder="Enter Sandman"></input>
+			<button type="button" class="btn btn-primary">Meow!</button>
+		</div><br>
+
+		<iframe src="https://www.youtube.com/embed/MFEHvIyeYLc" frameborder="0" allowfullscreen></iframe><br>
+
+	    <table id="track-table" style="width:50%">
+        <tr>
+          <th>Artist</th>
+          <th>Song Title</th> 
+        </tr>
+      	</table>
 	</div>
 
-<div>
-	
-</div>	
-
-<footer>Acoustic Kitty 2017 &copy;</footer>
+	<footer>Acoustic Kitty 2017 &copy;</footer>
       
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="assets/js/scripts.js"></script> 
 </body>
 </html>
