@@ -1,0 +1,33 @@
+{
+  "name": "lastfm-autocomplete",
+  "authors": [
+    "Diogo Oliveira de Melo <dmelo87@gmail.com>"
+  ],
+  "description": "Autocomplete feature using Last.fm API",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://github.com/dmelo/lastfm-autocomplete",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "jquery-ui": "^1.11.4",
+    "bootstrap": "^3.3.6"
+  },
+  "_release": "97562faada",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "97562faadaccdc684a8da3fb9230d2c4846af854"
+  },
+  "_source": "https://github.com/dmelo/lastfm-autocomplete.git",
+  "_target": "*",
+  "_originalSource": "lastfm-autocomplete",
+  "_direct": true
+}

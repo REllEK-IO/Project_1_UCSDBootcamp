@@ -1,7 +1,6 @@
 
 //Test Vars
-var artistURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=cher&api_key=932e4c349b7caae7626ea15a10649e1f&format=json";
-var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=932e4c349b7caae7626ea15a10649e1f&artist=Cher&album=Believe&format=json";
+
 
 //If album/artist is searched Add this object to DOM
 
@@ -271,10 +270,11 @@ $(document).ready(function(){
 
             if (null !== d) {
                 $('#value').html(d.value);
-                searchType =  d.category;
 
+                searchType =  d.category;
                 tempArtist = d.artist;
-                $('#musicTitle').html(d.musicTitle);
+                tempMusicName = d.musicTitle;
+
                 $('#label').html('<pre>' + d.label + '</pre>');
                 $('#data').html(d.data);
                 $('#lastfm').html(JSON.stringify(d.lastfm));

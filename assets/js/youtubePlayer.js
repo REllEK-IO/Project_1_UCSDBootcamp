@@ -3,12 +3,137 @@ var video = "";
 var playlist = "";
 var searchType = "track";
 var tempArtist = "";
+var tempMusicName = "";
 var playerExists = false;
+var PossibleSongs;
 
-var Songlist = function(){
-	this.create = function(){
-		console("Songlist wants to go");
-	}
+var listLength = 50;
+
+//Creates a songlist in the dom which the user can add songs contained in the list to the current Playlist
+//
+//@searchTerm is [artist, musicName] @typeOfSearch determines if searchTerm is for album or artist
+var SongList = function(searchTerm,typeOfSearch){
+	console.log("passed here");
+    //Single input for album
+
+    this.search = searchTerm[0];
+    this.searchNext = searchTerm[1];
+
+    this.artistName = [];
+    this.portrait = [];
+
+    //Always an array
+    this.songName = [];
+    this.streamPage = [];
+
+    self = this;
+
+    this.addSong = function(e){
+        console.log(e.attr("songName"));
+    }
+
+    this.createTable = function(listLength){
+        console.log("Attempting to add songlist", self.songName);
+
+        if(typeOfSearch === "artist"){
+        	console.log("For artist");
+        	console.log(listLength);
+            for (var i = 0; i < self.songName.length; i++) {
+            	
+                var tempRow = $("<tr>")
+                tempRow.append($("<th>").html("<image src = '" + self.portrait[i] + "'>"));
+                tempRow.append($("<th>").html(self.artistName[i]));
+                tempRow.append($("<th>").html(self.songName[i]));
+                tempRow.append($("<th>").html("<a href='" + self.streamPage[i] + "'>LastFM Song Page</a>"));
+                tempRow.append($("<th>").html("<span id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + " " + self.artistName[i] + "'>" + "+" + "</span>")
+                                    .click(function(e){self.addSong(e)}));
+                $("#songList").children().append(tempRow);
+            }
+        }
+        else if(typeOfSearch === "album"){
+        	console.log("For album");
+        	console.log(self.songName.length);
+            for (var i = 0; i < self.songName.length; i++) {
+                var tempRow = $("<tr>")
+                tempRow.append($("<th>").html("<image src = '" + self.portrait + "'>"));
+                tempRow.append($("<th>").html(self.artistName));
+                tempRow.append($("<th>").html(self.songName[i]));
+                tempRow.append($("<th>").html("<a href='" + self.streamPage[i] + "'>LastFM Song Page</a>"));
+                tempRow.append($("<th>").html("<span id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + " " + self.artistName + "'>" + "+" + "</span>")
+                                    .click(function(e){self.addSong(e)}));
+                $("#songList").children().append(tempRow);
+
+
+                // var tempRow = $("<tr>")
+                // tempRow.append($("<th>").html("<image src = '" + "hello" + "'>"));
+                // tempRow.append($("<th>").html("yes"));
+                // tempRow.append($("<th>").html("no"));
+                // tempRow.append($("<th>").html("<a>Song</a>"));
+                // tempRow.append($("<th>").html("<span>Name</span>"));
+                // $("#songList").children().append(tempRow);
+            }
+        }
+        else{
+        	$()
+        }
+    }
+
+    this.fillSongList = function(){
+        if(typeOfSearch === "artist"){
+            var artistURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + self.search + "&api_key=932e4c349b7caae7626ea15a10649e1f&format=json";
+            
+            $.ajax({
+                url: artistURL, 
+                method: 'GET'
+            }).done(function(response){
+            	listLength = response.toptracks.track.length;
+            	console.log("At source ", listLength);
+            	console.log(response);
+                for(var i = 0; i < response.toptracks.track.length; i++)
+                {
+                    self.songName.push(response.toptracks.track[i].name);
+                    self.artistName.push(response.toptracks.track[i].artist.name);
+                    //Gets the medium sized portrait
+                    self.portrait.push(response.toptracks.track[i].image[1]["#text"]);
+                    self.streamPage.push(response.toptracks.track[i].url);
+                }
+            });
+        }
+        else if(typeOfSearch === "album"){
+            var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=932e4c349b7caae7626ea15a10649e1f&artist="+ self.search + "&album=" + self.searchNext + "&format=json";
+
+            $.ajax({
+                url: albumURL, 
+                method: 'GET'
+            }).done(function(response){
+            	listLength = response.toptracks.track.length;
+            	console.log(response);
+                self.artistName = response.album.artist;
+                self.portrait = response.album.image[1]["#text"];
+
+                for(var i = 0; i < response.album.tracks.track.length; i++)
+                {
+                    self.songName = response.album.tracks.track[i].name;
+                    self.streamPage = response.album.tracks.track[i].url;
+                }
+            });
+        }
+        else{
+            console.log("<<<!!!Error At SongList: typeOfSearch was not within bounds!!!>>>");
+        }
+
+        $("#songList").removeClass("hidden");
+        self.createTable();
+    }(listLength);
+
+    // this.clearSongList = function(){
+    //     this.songName = [];
+    //     this.artistName = [];
+    //     this.portrait = [];
+    //     this.streamPage = [];
+    //     $("#songList").empty();
+    //     $("#songList").addClass("hidden");
+    // }   
 }
 
 var Song = function(name){
@@ -71,7 +196,7 @@ var Song = function(name){
 
 var Playlist = function(){
 	this.playlistItems = [];
-	
+	self = this;
 	//
 	//@song: Get from SearchList artist and song
 	this.addSong = function(song){
@@ -89,10 +214,10 @@ var Playlist = function(){
 		$("#playlistTable").append(labels);
 
 		//Populate playlist table with playlistItems content
-		for (var i = 0; i < this.playlistItems.length; i++) {
-			$("#playlistTable").append($("<tr>").append($("<th>").html(this.playlistItems[i].songName))
-												.append($("<th>").html(this.playlistItems[i].artistName))
-												.append($("<th>").html(this.playlistItems[i].id))
+		for (var i = 0; i < self.playlistItems.length; i++) {
+			$("#playlistTable").append($("<tr>").append($("<th>").html(self.playlistItems[i].songName))
+												.append($("<th>").html(self.playlistItems[i].artistName))
+												.append($("<th>").html(self.playlistItems[i].id))
 			);
 		}
 	}
@@ -161,8 +286,9 @@ var searchYoutube = function(){
 	var search = $("#search").val();
 
 	if(playerExists){
+		console.log("Player already Exists", searchType);
 		if(searchType === "artist" || searchType === "album"){
-		Songlist.create();
+			PossibleSongs = new SongList([tempArtist,tempMusicName],searchType);
 		}
 		else{
 			YoutubePlaylist.addSong(search);
@@ -221,14 +347,14 @@ $(document).ready(function(){
 		if(e.which == 13) {
 			e.preventDefault();
         	searchYoutube();
-			YoutubePlaylist.addPlaylist();
+			//YoutubePlaylist.addPlaylist();
     	}
 	});
 
 	$("#submit").click(function(e){
 		e.preventDefault();
 		searchYoutube();
-		YoutubePlaylist.addPlaylist();
+		//YoutubePlaylist.addPlaylist();
 	});
 
 	$("#mute").click(function(e){
