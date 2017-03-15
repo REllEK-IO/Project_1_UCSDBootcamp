@@ -37,7 +37,10 @@ var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=9
 // });
 
 $(document).ready(function(){
+
     (function ($) {
+        
+
         /**
          * Callback function that render the calculate elements on ret.
          */
@@ -268,12 +271,15 @@ $(document).ready(function(){
 
             if (null !== d) {
                 $('#value').html(d.value);
-                $('#category').html(d.category);
-                $('#artist').html(d.artist);
+                searchType =  d.category;
+
+                tempArtist = d.artist;
                 $('#musicTitle').html(d.musicTitle);
                 $('#label').html('<pre>' + d.label + '</pre>');
                 $('#data').html(d.data);
                 $('#lastfm').html(JSON.stringify(d.lastfm));
+
+                console.log("<<<<<<<<<<<<<<    " + d.category + "     >>>>>>>>>>>>>>>>>");
             }
         }
 

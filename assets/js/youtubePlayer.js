@@ -1,10 +1,28 @@
 var player;
 var video = "";
-var playlist = ""
+var playlist = "";
+var searchType = "track";
+var tempArtist = "";
+var playerExists = false;
 
-var Song = function(name, artist){
+var Songlist = function(){
+	this.create = function(){
+		console("Songlist wants to go");
+	}
+}
+
+var Song = function(name){
 	this.songName = name;
-	this.artistName = artist;
+	this.artistName;
+	if(tempArtist != ""){
+		this.artistName = tempArtist;
+	}
+	else{
+
+		this.artistName = "Unknown";
+	}
+	tempArtist = "";
+
 	this.viewCount;
 
 	self = this;
@@ -56,8 +74,8 @@ var Playlist = function(){
 	
 	//
 	//@song: Get from SearchList artist and song
-	this.addSong = function(artist, song){
-		this.playlistItems.push(new Song(song, artist));
+	this.addSong = function(song){
+		this.playlistItems.push(new Song(song));
 	}
 
 	//Refreshes playlist table with current song values
@@ -82,8 +100,8 @@ var Playlist = function(){
 	//Refreshes player with current playlist
 	this.addPlaylist = function(){
 		var playlistCondensed = "";
-		for (var i = 0; i < playlistItems.length; i++) {
-			playlistCondensed += "," + playlistItems[i].id;
+		for (var i = 0; i < self.playlistItems.length; i++) {
+			playlistCondensed += "," + self.playlistItems[i].id;
 		}
 		loadPlaylist(playlistCondensed);
 	}
@@ -142,6 +160,15 @@ var addPlayer = function(){
 var searchYoutube = function(){
 	var search = $("#search").val();
 
+	if(playerExists){
+		if(searchType === "artist" || searchType === "album"){
+		Songlist.create();
+		}
+		else{
+			YoutubePlaylist.addSong(search);
+		}
+	}
+	else{
 		if(search === ""){
 			search = "Acoustic Kitty"
 		}
@@ -149,20 +176,21 @@ var searchYoutube = function(){
 		var apiKey = "AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY";
 		var queryURL = "https://www.googleapis.com/youtube/v3/search?" + 
 		//Search query
-        "&q=" + encodeURI(search) +
-        //part type
-        "&part=snippet" +
-        //Api key
-        "&type=video" +
-        "&videoEmbeddable=true" +
-        "&videoSyndicated=true" +
-        "&key=" + apiKey;
+	    "&q=" + encodeURI(search) +
+	    //part type
+	    "&part=snippet" +
+	    //Api key
+	    "&type=video" +
+	    "&videoEmbeddable=true" +
+	    "&videoSyndicated=true" +
+	    "&key=" + apiKey;
 
-        //addPlayer('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
+	    //addPlayer('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
 		$.ajax({
 			url: queryURL, 
 			method: 'GET'
 		}).done(function(response){
+			playerExists = true;
 			$("loading").removeClass("hidden");
 			playlist = response.items[0].id.videoId;
 			video = response.items[0].id.videoId;
@@ -172,6 +200,7 @@ var searchYoutube = function(){
 			console.log(playlist);
 			addPlayer(playlist, video);
 		});
+	}
 }
 
 var mutePlayer = function(){
@@ -185,13 +214,22 @@ var loadPlaylist = function(playlistVal){
 // var p = 'NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE';
 // addPlayer(p);
 
+var YoutubePlaylist = new Playlist();
+
 $(document).ready(function(){
-	var YoutubePlaylist = 
+	$("#search").keypress(function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+        	searchYoutube();
+			YoutubePlaylist.addPlaylist();
+    	}
+	});
 
 	$("#submit").click(function(e){
 		e.preventDefault();
 		searchYoutube();
-	})
+		YoutubePlaylist.addPlaylist();
+	});
 
 	$("#mute").click(function(e){
 		e.preventDefault();
