@@ -256,7 +256,7 @@ function onYouTubeIframeAPIReady() {
       height: '390',
       width: '640',
       videoId: video,
-      playerVars: {		modestbranding: 1,'playlist': playlist, autoplay: 0, showinfo: 1	},
+      playerVars: {		modestbranding: 1, autoplay: 0, showinfo: 1	},
       events: {
         'onReady': function (event) {
 	        event.target.playVideo();
@@ -316,6 +316,7 @@ var searchYoutube = function(){
 		}
 	}
 	else{
+		loadPlaylist();
 		disableSearchButton();
 		console.log("Player already Exists", searchType);
 		if(searchType === "artist" || searchType === "album"){
@@ -333,12 +334,12 @@ var mutePlayer = function(){
 }
 
 var loadPlaylist = function(playlistVal){
-	var search = $("#search").val();
+	var search = $("#search").val() + " Acoustic";
 	if(playerExists){
 		player.loadPlaylist(playlistVal);
 	}
 	else{
-		player.loadPlaylist(playlistVal);
+		//player.loadPlaylist(playlistVal);
 		if(search === ""){
 			search = "Acoustic Kitty"
 		}
@@ -353,6 +354,7 @@ var loadPlaylist = function(playlistVal){
 	    "&type=video" +
 	    "&videoEmbeddable=true" +
 	    "&videoSyndicated=true" +
+	    "&topicId=/m/04rlf" +
 	    "&key=" + apiKey;
 
 	    //addPlayer('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
