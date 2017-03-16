@@ -7,8 +7,6 @@ var tempMusicName = "";
 var playerExists = false;
 var PossibleSongs;
 
-var listLength = 50;
-
 //Creates a songlist in the dom which the user can add songs contained in the list to the current Playlist
 //
 //@searchTerm is [artist, musicName] @typeOfSearch determines if searchTerm is for album or artist
@@ -29,15 +27,15 @@ var SongList = function(searchTerm,typeOfSearch){
     self = this;
 
     this.addSong = function(e){
+        
         console.log(e.attr("songName"));
     }
 
-    this.createTable = function(listLength){
+    this.createTable = function(){
         console.log("Attempting to add songlist", self.songName);
 
         if(typeOfSearch === "artist"){
         	console.log("For artist");
-        	console.log(listLength);
             for (var i = 0; i < self.songName.length; i++) {
             	
                 var tempRow = $("<tr>")
@@ -49,6 +47,7 @@ var SongList = function(searchTerm,typeOfSearch){
                                     .click(function(e){self.addSong(e)}));
                 $("#songList").children().append(tempRow);
             }
+            initYoutubeSearchButtons();
         }
         else if(typeOfSearch === "album"){
         	console.log("For album");
@@ -72,9 +71,10 @@ var SongList = function(searchTerm,typeOfSearch){
                 // tempRow.append($("<th>").html("<span>Name</span>"));
                 // $("#songList").children().append(tempRow);
             }
+            initYoutubeSearchButtons();
         }
         else{
-        	$()
+        	
         }
     }
 
@@ -86,10 +86,13 @@ var SongList = function(searchTerm,typeOfSearch){
                 url: artistURL, 
                 method: 'GET'
             }).done(function(response){
-            	listLength = response.toptracks.track.length;
-            	console.log("At source ", listLength);
+            	var forControl = response.toptracks.track.length;
             	console.log(response);
-                for(var i = 0; i < response.toptracks.track.length; i++)
+            	if(response.toptracks.track.length > 5){
+            		forControl = 5;
+            	}
+
+                for(var i = 0; i < forControl; i++)
                 {
                     self.songName.push(response.toptracks.track[i].name);
                     self.artistName.push(response.toptracks.track[i].artist.name);
@@ -97,6 +100,9 @@ var SongList = function(searchTerm,typeOfSearch){
                     self.portrait.push(response.toptracks.track[i].image[1]["#text"]);
                     self.streamPage.push(response.toptracks.track[i].url);
                 }
+                $("#songList").removeClass("hidden");
+        		self.createTable();
+        		
             });
         }
         else if(typeOfSearch === "album"){
@@ -106,25 +112,29 @@ var SongList = function(searchTerm,typeOfSearch){
                 url: albumURL, 
                 method: 'GET'
             }).done(function(response){
-            	listLength = response.toptracks.track.length;
+            	var forControl = response.toptracks.track.length;
             	console.log(response);
+            	if(response.toptracks.track.length > 5){
+            		forControl = 5;
+            	}
+
                 self.artistName = response.album.artist;
                 self.portrait = response.album.image[1]["#text"];
 
-                for(var i = 0; i < response.album.tracks.track.length; i++)
+                for(var i = 0; i < forControl; i++)
                 {
-                    self.songName = response.album.tracks.track[i].name;
-                    self.streamPage = response.album.tracks.track[i].url;
+                    self.songName.push(response.album.tracks.track[i].name);
+                    self.streamPage.push(response.album.tracks.track[i].url);
                 }
+                $("#songList").removeClass("hidden");
+        		self.createTable();
+        		
             });
         }
         else{
             console.log("<<<!!!Error At SongList: typeOfSearch was not within bounds!!!>>>");
         }
-
-        $("#songList").removeClass("hidden");
-        self.createTable();
-    }(listLength);
+    }();
 
     // this.clearSongList = function(){
     //     this.songName = [];
@@ -138,8 +148,11 @@ var SongList = function(searchTerm,typeOfSearch){
 
 var Song = function(name){
 	this.songName = name;
+	if(tempMusicName !== ""){
+		this.songName = tempMusicName;
+	}
 	this.artistName;
-	if(tempArtist != ""){
+	if(tempArtist !== ""){
 		this.artistName = tempArtist;
 	}
 	else{
@@ -147,8 +160,6 @@ var Song = function(name){
 		this.artistName = "Unknown";
 	}
 	tempArtist = "";
-
-	this.viewCount;
 
 	self = this;
 
@@ -172,7 +183,7 @@ var Song = function(name){
         "&videoEmbeddable=true" +
         "&videoSyndicated=true" +
         "&order=viewCount" +
-        "&topicId=/m/04rlf"
+        "&topicId=/m/04rlf" +
         "&key=" + apiKey;
 
         console.log(queryURL);
@@ -186,7 +197,7 @@ var Song = function(name){
 				method: 'GET'
 			}).done(function(data){
 				self.id = response.items[0].id.videoId;
-				self.viewCount = data.items.statistics.viewCount;
+				YoutubePlaylist.refreshPlaylist();
 			});
 		});
 	}
@@ -198,10 +209,13 @@ var Playlist = function(){
 	this.playlistItems = [];
 	self = this;
 	//
-	//@song: Get from SearchList artist and song
-	this.addSong = function(song){
-		this.playlistItems.push(new Song(song));
-	}
+
+
+	// this.removeSong = function(id){
+	// 	for(var i = 0; i > playlistItems.length; i++){
+	// 		if()
+	// 	}
+	// }
 
 	//Refreshes playlist table with current song values
 	this.refreshPlaylist = function(){
@@ -214,10 +228,10 @@ var Playlist = function(){
 		$("#playlistTable").append(labels);
 
 		//Populate playlist table with playlistItems content
-		for (var i = 0; i < self.playlistItems.length; i++) {
-			$("#playlistTable").append($("<tr>").append($("<th>").html(self.playlistItems[i].songName))
-												.append($("<th>").html(self.playlistItems[i].artistName))
-												.append($("<th>").html(self.playlistItems[i].id))
+		for (var i = 0; i < this.playlistItems.length; i++) {
+			$("#playlistTable").append($("<tr>").append($("<th>").html(this.playlistItems[i].songName))
+												.append($("<th>").html(this.playlistItems[i].artistName))
+												.append($("<th>").html(this.playlistItems[i].id))
 			);
 		}
 	}
@@ -229,6 +243,11 @@ var Playlist = function(){
 			playlistCondensed += "," + self.playlistItems[i].id;
 		}
 		loadPlaylist(playlistCondensed);
+	}
+
+	//@song: Get from SearchList artist and song
+	this.addSong = function(song){
+		this.playlistItems.push(new Song(song));;	
 	}
 }
 
@@ -286,15 +305,40 @@ var searchYoutube = function(){
 	var search = $("#search").val();
 
 	if(playerExists){
+		disableSearchButton();
 		console.log("Player already Exists", searchType);
 		if(searchType === "artist" || searchType === "album"){
 			PossibleSongs = new SongList([tempArtist,tempMusicName],searchType);
 		}
 		else{
 			YoutubePlaylist.addSong(search);
+			initYoutubeSearchButtons();
 		}
 	}
 	else{
+		disableSearchButton();
+		console.log("Player already Exists", searchType);
+		if(searchType === "artist" || searchType === "album"){
+			PossibleSongs = new SongList([tempArtist,tempMusicName],searchType);
+		}
+		else{
+			YoutubePlaylist.addSong(search);
+			initYoutubeSearchButtons();
+		}
+	}
+}
+
+var mutePlayer = function(){
+	player.mute();
+}
+
+var loadPlaylist = function(playlistVal){
+	var search = $("#search").val();
+	if(playerExists){
+		player.loadPlaylist(playlistVal);
+	}
+	else{
+		player.loadPlaylist(playlistVal);
 		if(search === ""){
 			search = "Acoustic Kitty"
 		}
@@ -329,20 +373,13 @@ var searchYoutube = function(){
 	}
 }
 
-var mutePlayer = function(){
-	player.mute();
-}
-
-var loadPlaylist = function(playlistVal){
-	player.loadPlaylist(playlistVal);
-}
-
 // var p = 'NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE';
 // addPlayer(p);
 
 var YoutubePlaylist = new Playlist();
 
-$(document).ready(function(){
+var initYoutubeSearchButtons = function(){
+	$("#search").val("");
 	$("#search").keypress(function(e) {
 		if(e.which == 13) {
 			e.preventDefault();
@@ -356,6 +393,16 @@ $(document).ready(function(){
 		searchYoutube();
 		//YoutubePlaylist.addPlaylist();
 	});
+
+}
+
+var disableSearchButton = function(){
+	$("#submit").off();
+	//$("#search").off();
+}
+
+$(document).ready(function(){
+	initYoutubeSearchButtons();
 
 	$("#mute").click(function(e){
 		e.preventDefault();

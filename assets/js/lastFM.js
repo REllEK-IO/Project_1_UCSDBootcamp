@@ -166,7 +166,7 @@ $(document).ready(function(){
                 optionSet;
 
             console.log(baseUrl);
-
+            
             for (key in moduleList) {
                 if (['artist', 'album', 'track'].indexOf(moduleList[key]) >= 0) {
                     globalResponse = response;
