@@ -1,0 +1,91 @@
+header {
+  background: #21455c;
+  background-size: 40%;
+  color: #eceff1;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 100px;
+  padding-top: 15px;
+  width: 100%;
+  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.35), 0 6px 20px 0 rgba(0, 0, 0, 0.35);
+}
+
+h1 {
+  float: left;
+  margin-left: 20%;
+  color: #fbfdef;
+  font-family: 'Special Elite', cursive;
+  letter-spacing: 1px;
+  font-size: 52px;
+  margin-top: 13px;
+}
+
+h2 {
+  float: right;
+  color: #fbfdef;
+  margin-right: 100px;
+  font-family: 'Special Elite', cursive;
+  font-size: 36px;
+  margin-top: 25px;
+}
+
+body {
+  background: url("http://i.imgur.com/U46Na3e.jpg"); 
+  background-size: 100%;
+}
+
+#maincontent {
+  background: #fbfdef;
+  margin-top: 0px;
+  width: 65%;
+  margin: 0 auto;
+  color: #37474f;
+  margin-top: 100px;
+  box-shadow: 0 4px 16px 10px rgba(0, 0, 0, 0.35), 0 4px 16px 10px rgba(0, 0, 0, 0.35);
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  color: black;
+}
+
+.headshots {
+  width: 35%;
+  height: auto;
+  margin: 30px;
+}
+
+
+#andrew {
+  float: right;
+  margin-right: 10%;
+}
+
+#micah {
+  float:right;
+  margin-right: 10%;
+}
+
+#karth {
+  margin-left: 10%;
+}
+
+#zamir {
+  margin-left: 10%;
+}
+
+
+
+
+
+footer {
+  color: #fbfdef;
+  text-align: center;
+  background: #21455c;
+  width: 100%; 
+  margin: 0 auto;
+  box-shadow: 0 4px 16px 0px rgba(0, 0, 0, 0.35), 0 4px 16px 0px rgba(0, 0, 0, 0.35);
+  font-family: 'Special Elite', cursive;
+}
