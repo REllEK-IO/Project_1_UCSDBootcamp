@@ -1,9 +1,14 @@
 var player;
 var video = "";
 var playlist = "";
-var searchType = "track";
-var tempArtist = "";
-var tempMusicName = "";
+// var searchType = "track";
+// var tempArtist = "";
+// var tempMusicName = "";
+
+sessionStorage.setItem('tempArtist', ""); //sessionStorage.getItem('tempArtist')
+sessionStorage.setItem('searchType', "track"); //sessionStorage.getItem('searchType')
+sessionStorage.setItem('tempMusicName', ""); //sessionStorage.getItem('tempMusicName')
+//sessionStorage.setItem('playerExists', 'false');
 var playerExists = false;
 var PossibleSongs;
 
@@ -43,10 +48,14 @@ var SongList = function(searchTerm,typeOfSearch){
                 tempRow.append($("<th>").html(self.artistName[i]));
                 tempRow.append($("<th>").html(self.songName[i]));
                 tempRow.append($("<th>").html("<a href='" + self.streamPage[i] + "'>LastFM Song Page</a>"));
-                tempRow.append($("<th>").html("<span id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + " " + self.artistName[i] + "'>" + "+" + "</span>")
-                                    .click(function(e){self.addSong(e)}));
+                tempRow.append($("<th>").html("<span class='add-song' id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + "'>" + "+" + "</span>"));
                 $("#songList").children().append(tempRow);
             }
+
+            $(".add-song").click(function(){
+            	YoutubePlaylist.addSong($(this).attr("songName"));
+            });
+
             initYoutubeSearchButtons();
         }
         else if(typeOfSearch === "album"){
@@ -58,19 +67,14 @@ var SongList = function(searchTerm,typeOfSearch){
                 tempRow.append($("<th>").html(self.artistName));
                 tempRow.append($("<th>").html(self.songName[i]));
                 tempRow.append($("<th>").html("<a href='" + self.streamPage[i] + "'>LastFM Song Page</a>"));
-                tempRow.append($("<th>").html("<span id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + " " + self.artistName + "'>" + "+" + "</span>")
-                                    .click(function(e){self.addSong(e)}));
+                tempRow.append($("<th>").html("<span class='add-song' id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + "'>" + "+" + "</span>"));
                 $("#songList").children().append(tempRow);
-
-
-                // var tempRow = $("<tr>")
-                // tempRow.append($("<th>").html("<image src = '" + "hello" + "'>"));
-                // tempRow.append($("<th>").html("yes"));
-                // tempRow.append($("<th>").html("no"));
-                // tempRow.append($("<th>").html("<a>Song</a>"));
-                // tempRow.append($("<th>").html("<span>Name</span>"));
-                // $("#songList").children().append(tempRow);
             }
+
+            $(".add-song").click(function(){
+            	YoutubePlaylist.addSong($(this).attr("songName"));
+            });
+
             initYoutubeSearchButtons();
         }
         else{
@@ -112,9 +116,9 @@ var SongList = function(searchTerm,typeOfSearch){
                 url: albumURL, 
                 method: 'GET'
             }).done(function(response){
-            	var forControl = response.toptracks.track.length;
+            	var forControl = response.album.tracks.track.length;
             	console.log(response);
-            	if(response.toptracks.track.length > 5){
+            	if(response.album.tracks.track.length > 5){
             		forControl = 5;
             	}
 
@@ -148,18 +152,18 @@ var SongList = function(searchTerm,typeOfSearch){
 
 var Song = function(name){
 	this.songName = name;
-	if(tempMusicName !== ""){
-		this.songName = tempMusicName;
+	if(sessionStorage.getItem('tempMusicName') !== ""){
+		this.songName = sessionStorage.getItem('tempMusicName');
 	}
 	this.artistName;
-	if(tempArtist !== ""){
-		this.artistName = tempArtist;
+	if(sessionStorage.getItem('tempArtist') !== ""){
+		this.artistName = sessionStorage.getItem('tempArtist');
 	}
 	else{
 
 		this.artistName = "Unknown";
 	}
-	tempArtist = "";
+	sessionStorage.setItem('tempArtist', "");
 
 	self = this;
 
@@ -172,7 +176,7 @@ var Song = function(name){
 
 		//https://www.googleapis.com/youtube/v3/search?&q=cat&part=snippet&type=video&key=AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY
 
-		var apiKey = "AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY";
+		var apiKey = "AIzaSyAdyUe4SKUg4MAl4qpKhHu3ZnWnJTtiy_k";
 		var queryURL = "https://www.googleapis.com/youtube/v3/search?" + 
 		//Search query
         "&q=" + encodeURI(search) +
@@ -193,7 +197,7 @@ var Song = function(name){
 			method: 'GET'
 		}).done(function(response){
 			$.ajax({
-				url: "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + response.items[0].id.videoId + "&key=AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY", 
+				url: "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + response.items[0].id.videoId + "&key=" + apiKey, 
 				method: 'GET'
 			}).done(function(data){
 				self.id = response.items[0].id.videoId;
@@ -201,8 +205,6 @@ var Song = function(name){
 			});
 		});
 	}
-
-	this.id = this.getSongId();
 }
 
 var Playlist = function(){
@@ -239,8 +241,8 @@ var Playlist = function(){
 	//Refreshes player with current playlist
 	this.addPlaylist = function(){
 		var playlistCondensed = "";
-		for (var i = 0; i < self.playlistItems.length; i++) {
-			playlistCondensed += "," + self.playlistItems[i].id;
+		for (var i = 0; i < this.playlistItems.length; i++) {
+			playlistCondensed += "," + this.playlistItems[i].id;
 		}
 		loadPlaylist(playlistCondensed);
 	}
@@ -272,6 +274,11 @@ function onYouTubeIframeAPIReady() {
       }
 
     });
+}
+
+var slideOutTop = function(){
+	$("#cat-image").addClass("slide-out hidden");
+	$("#info").addClass("slide-out hidden");
 }
 
 var addPlayer = function(){
@@ -306,9 +313,9 @@ var searchYoutube = function(){
 
 	if(playerExists){
 		disableSearchButton();
-		console.log("Player already Exists", searchType);
-		if(searchType === "artist" || searchType === "album"){
-			PossibleSongs = new SongList([tempArtist,tempMusicName],searchType);
+		console.log("Player already Exists", sessionStorage.getItem('searchType'));
+		if(sessionStorage.getItem('searchType') === "artist" || sessionStorage.getItem('searchType') === "album"){
+			PossibleSongs = new SongList([sessionStorage.getItem('tempArtist'),sessionStorage.getItem('tempMusicName')],sessionStorage.getItem('searchType'));
 		}
 		else{
 			YoutubePlaylist.addSong(search);
@@ -318,9 +325,9 @@ var searchYoutube = function(){
 	else{
 		loadPlaylist();
 		disableSearchButton();
-		console.log("Player already Exists", searchType);
-		if(searchType === "artist" || searchType === "album"){
-			PossibleSongs = new SongList([tempArtist,tempMusicName],searchType);
+		console.log("Player does not exist", sessionStorage.getItem('searchType'));
+		if(sessionStorage.getItem('searchType') === "artist" || sessionStorage.getItem('searchType') === "album"){
+			PossibleSongs = new SongList([sessionStorage.getItem('tempArtist'),sessionStorage.getItem('tempMusicName')],sessionStorage.getItem('searchType'));
 		}
 		else{
 			YoutubePlaylist.addSong(search);
@@ -344,7 +351,7 @@ var loadPlaylist = function(playlistVal){
 			search = "Acoustic Kitty"
 		}
 
-		var apiKey = "AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY";
+		var apiKey = "AIzaSyAdyUe4SKUg4MAl4qpKhHu3ZnWnJTtiy_k";
 		var queryURL = "https://www.googleapis.com/youtube/v3/search?" + 
 		//Search query
 	    "&q=" + encodeURI(search) +
@@ -382,17 +389,13 @@ var YoutubePlaylist = new Playlist();
 
 var initYoutubeSearchButtons = function(){
 	$("#search").val("");
-	$("#search").keypress(function(e) {
-		if(e.which == 13) {
-			e.preventDefault();
-        	searchYoutube();
-			//YoutubePlaylist.addPlaylist();
-    	}
-	});
 
 	$("#submit").click(function(e){
 		e.preventDefault();
 		searchYoutube();
+		if(!playerExists){
+			slideOutTop();
+		}
 		//YoutubePlaylist.addPlaylist();
 	});
 
@@ -413,7 +416,8 @@ $(document).ready(function(){
 
 	$("#load").click(function(e){
 		e.preventDefault();
-		loadPlaylist('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
+		// loadPlaylist('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
+		YoutubePlaylist.addPlaylist();
 	});
 	
 })

@@ -270,10 +270,9 @@ $(document).ready(function(){
 
             if (null !== d) {
                 $('#value').html(d.value);
-
-                searchType =  d.category;
-                tempArtist = d.artist;
-                tempMusicName = d.musicTitle;
+                sessionStorage.setItem('tempArtist', d.artist); //sessionStorage.getItem('tempArtist')
+                sessionStorage.setItem('searchType', d.category); //sessionStorage.getItem('searchType')
+                sessionStorage.setItem('tempMusicName', d.musicTitle); //sessionStorage.getItem('tempMusicName')
 
                 $('#label').html('<pre>' + d.label + '</pre>');
                 $('#data').html(d.data);
