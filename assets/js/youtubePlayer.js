@@ -39,6 +39,14 @@ var SongList = function(searchTerm,typeOfSearch){
     this.createTable = function(){
         console.log("Attempting to add songlist", self.songName);
 
+        $("#songList").empty();
+
+        var labels = $("<tr>").append($("<th>").html("Icon"))
+							.append($("<th>").html("Artist"))
+							.append($("<th>").html("Stream Page"))
+							.append($("<th>").html("Add to Playlist"))
+		$("#songList").append(labels);
+
         if(typeOfSearch === "artist"){
         	console.log("For artist");
             for (var i = 0; i < self.songName.length; i++) {
@@ -48,12 +56,12 @@ var SongList = function(searchTerm,typeOfSearch){
                 tempRow.append($("<th>").html(self.artistName[i]));
                 tempRow.append($("<th>").html(self.songName[i]));
                 tempRow.append($("<th>").html("<a href='" + self.streamPage[i] + "'>LastFM Song Page</a>"));
-                tempRow.append($("<th>").html("<span class='add-song' id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + "'>" + "+" + "</span>"));
+                tempRow.append($("<th>").html("<span class='add-song' id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + "' artistName='" + self.artistName[i] + "'>" + "+" + "</span>"));
                 $("#songList").children().append(tempRow);
             }
 
             $(".add-song").click(function(){
-            	YoutubePlaylist.addSong($(this).attr("songName"));
+            	YoutubePlaylist.addSong($(this).attr("songName"), $(this).attr("artistName"));
             });
 
             initYoutubeSearchButtons();
@@ -67,12 +75,13 @@ var SongList = function(searchTerm,typeOfSearch){
                 tempRow.append($("<th>").html(self.artistName));
                 tempRow.append($("<th>").html(self.songName[i]));
                 tempRow.append($("<th>").html("<a href='" + self.streamPage[i] + "'>LastFM Song Page</a>"));
-                tempRow.append($("<th>").html("<span class='add-song' id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + "'>" + "+" + "</span>"));
+                tempRow.append($("<th>").html("<span class='add-song' id='" + self.songName[i] + i +"'' songName='" + self.songName[i] + "' artistName='" + self.artistName + "'>" + "+" + "</span>"));
                 $("#songList").children().append(tempRow);
             }
 
             $(".add-song").click(function(){
-            	YoutubePlaylist.addSong($(this).attr("songName"));
+            	YoutubePlaylist.addSong($(this).attr("songName"), $(this).attr("artistName"));
+            	YoutubePlaylist.refreshPlaylist();
             });
 
             initYoutubeSearchButtons();
@@ -150,25 +159,29 @@ var SongList = function(searchTerm,typeOfSearch){
     // }   
 }
 
-var Song = function(name){
+var Song = function(name, artist){
 	this.songName = name;
-	if(sessionStorage.getItem('tempMusicName') !== ""){
-		this.songName = sessionStorage.getItem('tempMusicName');
-	}
-	this.artistName;
-	if(sessionStorage.getItem('tempArtist') !== ""){
-		this.artistName = sessionStorage.getItem('tempArtist');
-	}
-	else{
+	this.artistName = artist;
+	// if(this.songName !== ""){
+	// 	this.songName = sessionStorage.getItem('tempMusicName');
+	// }
+	// this.artistName;
+	// if(this.artistName === ""){
+	// 	this.artistName = sessionStorage.getItem('tempArtist');
+	// }
+	// else{
 
-		this.artistName = "Unknown";
-	}
-	sessionStorage.setItem('tempArtist', "");
+	// 	this.artistName = "Unknown";
+	// }
+	sessionStorage.setItem('tempMusicName', '');
+	sessionStorage.setItem('tempArtist', '');
 
 	self = this;
 
 	this.getSongId = function(){
-		var search = this.songName + " Acoustic";
+		var search = self.songName + " " + self.artistName + " Acoustic";
+
+		console.log("What the fucK: " + search);
 
 		if(search === ""){
 			search = "Acoustic Kitty"
@@ -200,11 +213,12 @@ var Song = function(name){
 				url: "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + response.items[0].id.videoId + "&key=" + apiKey, 
 				method: 'GET'
 			}).done(function(data){
+				console.log
 				self.id = response.items[0].id.videoId;
 				YoutubePlaylist.refreshPlaylist();
 			});
 		});
-	}
+	}();
 }
 
 var Playlist = function(){
@@ -248,8 +262,8 @@ var Playlist = function(){
 	}
 
 	//@song: Get from SearchList artist and song
-	this.addSong = function(song){
-		this.playlistItems.push(new Song(song));;	
+	this.addSong = function(song, artist){
+		this.playlistItems.push(new Song(song, artist));;	
 	}
 }
 
@@ -318,7 +332,12 @@ var searchYoutube = function(){
 			PossibleSongs = new SongList([sessionStorage.getItem('tempArtist'),sessionStorage.getItem('tempMusicName')],sessionStorage.getItem('searchType'));
 		}
 		else{
-			YoutubePlaylist.addSong(search);
+			if(sessionStorage.getItem("artistName") !== ''){
+				YoutubePlaylist.addSong(sessionStorage.getItem("tempMusicName"), sessionStorage.getItem("tempArtist"));
+			}
+			else{
+				YoutubePlaylist.addSong(search);
+			}
 			initYoutubeSearchButtons();
 		}
 	}
@@ -330,7 +349,12 @@ var searchYoutube = function(){
 			PossibleSongs = new SongList([sessionStorage.getItem('tempArtist'),sessionStorage.getItem('tempMusicName')],sessionStorage.getItem('searchType'));
 		}
 		else{
-			YoutubePlaylist.addSong(search);
+			if(sessionStorage.getItem("artistName") !== ''){
+				YoutubePlaylist.addSong(sessionStorage.getItem("tempMusicName"), sessionStorage.getItem("tempArtist"));
+			}
+			else{
+				YoutubePlaylist.addSong(search);
+			}
 			initYoutubeSearchButtons();
 		}
 	}
@@ -412,6 +436,7 @@ $(document).ready(function(){
 	$("#mute").click(function(e){
 		e.preventDefault();
 		mutePlayer();
+		player.setPlaybackQuality("suggestedQuality:", "large");
 	});
 
 	$("#load").click(function(e){

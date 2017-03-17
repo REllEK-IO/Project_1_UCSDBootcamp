@@ -94,11 +94,13 @@ body {
   margin-left: 23%}
 
 #player {
-  height: 390px;
-  width: 640px;
+  height: auto;
+  width: 80%;
   background-color: #262626; 
   display: inline-block;
+  margin-left: 10%;
   margin-top: 15px;
+  margin-bottom: 0px;
 }
 
 .checkbox {
@@ -112,15 +114,12 @@ body {
   margin-right: 220px;
 }
 
-#songSearch{
-  margin-top: 20px;
-}
 
 #search {
   margin: 0 auto;
   height: 40px;
   width: 60%;
-  margin-top: 20px;
+  margin-top: 1px;
   border: none;
   border-top: solid 2px #21455c;
   border-bottom: solid 2px #21455c;

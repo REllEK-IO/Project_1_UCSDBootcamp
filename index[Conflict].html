@@ -10,10 +10,9 @@
 	<link href="https://fonts.googleapis.com/css?family=Special+Elite|Ruluko|Athiti" rel="stylesheet">
 	<link rel="icon" href="images/catlogo.JPG" sizes="16x16" type="image/png">
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/test.css">
 	<link href="assets/css/lastfm.css" media="screen" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="assets/css/test.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
-	
 	
 
 	<!-- Scripts -->
@@ -40,7 +39,17 @@
 		</div>
 	
 		<div id="songSearch">
-            <form>
+                    	<div class="checkbox">
+                      	<label><input type="checkbox" value="" id="artist" class="music-type" checked="checked"/> Artist</label>
+                    	</div>
+                    	<div class="checkbox">
+                      	<label><input type="checkbox" value="" id="album" class="music-type" checked="checked"/> Album</label>
+                    	</div>
+                    	<div class="checkbox">
+                     	<label><input type="checkbox" value="" id="track" class="music-type"/> Track</label>
+                     </div>
+
+			<form>
 				<div class="form-group">
 					<div class="form-group">
                         <input type="search" class="form-control" placeholder="Artist, album or track..." name="search" id="search"/>
@@ -49,16 +58,13 @@
 			</form>
 			
 			<center>
-				<button class="btn btn-primary" id="submit">Search</button>
-				<button class="btn btn-primary" id="mute">Mute</button>
-				<button class="btn btn-primary" id="load">Load</button>		
+			<button class="btn btn-primary" id="submit">Search</button>
+			<button class="btn btn-primary" id="mute">Mute</button>
+			<button class="btn btn-primary" id="load">Load</button>		
 			</center>
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-8" id="player">
-				<img class="loading center" id="#loading" src="assets/images/loading.gif">
-		</div>
-			<div class="col-md-2"></div>
+
+		<div class="center" id="player">
+			<img class="loading center" id="#loading" src="assets/images/loading.gif">
 		</div>
 
 			<table class="table hidden" id="songList">

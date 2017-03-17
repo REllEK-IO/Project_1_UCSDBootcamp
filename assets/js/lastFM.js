@@ -55,7 +55,7 @@ $(document).ready(function(){
          *
          * Possible elements are: 'artist', 'album' adn 'track'.
          */
-            moduleList = ["track", "artist"],
+            moduleList = ["track", "artist", "album"],
 
         /**
          * Auxiliar moduleList struct that keeps track of what modules have been
@@ -291,17 +291,17 @@ $(document).ready(function(){
             };
 
             // See what modules, among ['artist', 'album', 'track'], are checked.
-            var modules = [];
-            $('.music-type').each(function(key, value) {
-                if ($(this).is(':checked')) {
-                    modules.push($(this).attr('id'));
-                }
+            var modules = ['track' , 'artist', 'album'];
+            // $('.music-type').each(function(key, value) {
+            //     if ($(this).is(':checked')) {
+            //         modules.push($(this).attr('id'));
+            //     }
 
-                //Additional check
-                if(modules.length >= 3){
-                    modules = ['artist', 'album', 'track'];
-                }
-            });
+            //     //Additional check
+            //     if(modules.length >= 3){
+            //         modules = ['artist', 'album', 'track'];
+            //     }
+            // });
             acOptions.modules = modules;
 
             // if lfmAutocomplete is already placed, remove it.
