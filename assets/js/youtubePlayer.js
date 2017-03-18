@@ -8,9 +8,12 @@ var playlist = "";
 sessionStorage.setItem('tempArtist', ""); //sessionStorage.getItem('tempArtist')
 sessionStorage.setItem('searchType', "track"); //sessionStorage.getItem('searchType')
 sessionStorage.setItem('tempMusicName', ""); //sessionStorage.getItem('tempMusicName')
+sessionStorage.setItem('playerExists',"false");
 //sessionStorage.setItem('playerExists', 'false');
-var playerExists = false;
+
 var PossibleSongs;
+
+var database = firebase.database();
 
 //Creates a songlist in the dom which the user can add songs contained in the list to the current Playlist
 //
@@ -87,7 +90,7 @@ var SongList = function(searchTerm,typeOfSearch){
             initYoutubeSearchButtons();
         }
         else{
-        	
+        	console.log("Passed a track or unassigned search");
         }
     }
 
@@ -147,16 +150,7 @@ var SongList = function(searchTerm,typeOfSearch){
         else{
             console.log("<<<!!!Error At SongList: typeOfSearch was not within bounds!!!>>>");
         }
-    }();
-
-    // this.clearSongList = function(){
-    //     this.songName = [];
-    //     this.artistName = [];
-    //     this.portrait = [];
-    //     this.streamPage = [];
-    //     $("#songList").empty();
-    //     $("#songList").addClass("hidden");
-    // }   
+    }(); 
 }
 
 var Song = function(name, artist){
@@ -209,14 +203,14 @@ var Song = function(name, artist){
 			url: queryURL, 
 			method: 'GET'
 		}).done(function(response){
-			$.ajax({
-				url: "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + response.items[0].id.videoId + "&key=" + apiKey, 
-				method: 'GET'
-			}).done(function(data){
-				console.log
+			if(response.items.length === 0 || response.items.length === undefined){
+				self.id = "Not Found";
+			}
+			else{
 				self.id = response.items[0].id.videoId;
-				YoutubePlaylist.refreshPlaylist();
-			});
+			}
+			console.log("+++++++++++ " + self.id + "	++++++++++++++++ " + response.items.length);
+			YoutubePlaylist.refreshPlaylist();
 		});
 	}();
 }
@@ -224,6 +218,7 @@ var Song = function(name, artist){
 var Playlist = function(){
 	this.playlistItems = [];
 	self = this;
+	this.playlistCondensed = "";
 	//
 
 
@@ -254,78 +249,147 @@ var Playlist = function(){
 
 	//Refreshes player with current playlist
 	this.addPlaylist = function(){
-		var playlistCondensed = "";
-		for (var i = 0; i < this.playlistItems.length; i++) {
-			playlistCondensed += "," + this.playlistItems[i].id;
+		if(this.playlistItems[0].id !== "Not Found")
+		{
+			this.playlistCondensed = this.playlistItems[0].id;
 		}
-		loadPlaylist(playlistCondensed);
+		for (var i = 1; i < this.playlistItems.length; i++) {
+			if(this.playlistItems[i].id !== "Not Found")
+			{
+				this.playlistCondensed += "," + this.playlistItems[i].id;
+			}
+		}
+		console.log(this.playlistCondensed);
+		player.loadPlaylist(this.playlistCondensed);
 	}
 
 	//@song: Get from SearchList artist and song
 	this.addSong = function(song, artist){
 		this.playlistItems.push(new Song(song, artist));;	
 	}
+
+	this.loadPlaylist = function(newList){
+		this.playlistItems = newList.split(',');
+		this.addPlaylist();
+	}
+
+	this.savePlayist = function(){
+		if(this.playlistItems[0].id !== "Not Found")
+		{
+			this.playlistCondensed = this.playlistItems[0].id;
+		}
+		for (var i = 1; i < this.playlistItems.length; i++) {
+			if(this.playlistItems[i].id !== "Not Found")
+			{
+				this.playlistCondensed += "," + this.playlistItems[i].id;
+			}
+		}
+		database.ref().push({	"test":this.playlistCondensed	});
+	}
 }
 
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      height: '390',
-      width: '640',
-      videoId: video,
-      playerVars: {		modestbranding: 1, autoplay: 0, showinfo: 1	},
-      events: {
-        'onReady': function (event) {
-	        event.target.playVideo();
-	      },
-        'onStateChange': function (event) {
-	        if (event.data == YT.PlayerState.PLAYING && !done) {
-	          setTimeout(function () {
-		        player.stopVideo();
-		      }, 6000);
-	          done = true;
-	        }
-	      }
-      }
+// function onYouTubeIframeAPIReady() {
+//     player = new YT.Player('player', {
+//       height: '390',
+//       width: '640',
+//       videoId: video,
+//       playerVars: {		modestbranding: 1, autoplay: 0, showinfo: 1},
+//       events: {
+//         'onReady': function (event) {
+// 	        event.target.playVideo();
+// 	      },
+//         'onStateChange': function (event) {
+// 	        if (event.data == YT.PlayerState.PLAYING && !done) {
+// 	          setTimeout(function () {
+// 		        player.stopVideo();
+// 		      }, 6000);
+// 	          done = true;
+// 	        }
+// 	      }
+//       }
 
-    });
+//     });
+// }
+
+function onYouTubePlayer() {
+  player = new YT.Player('player', {
+    height: '490',
+    width: '880',
+    videoId: "xBfBYfPNXqE",
+    playerVars: { rel:0,loop:1,modestbranding: 1,controls:1, showinfo: 1, rel: 0, showsearch: 0, autoplay:1, iv_load_policy:3 },
+    events: {
+      'onStateChange': onPlayerStateChange,
+      'onError': catchError
+    }
+  });
+}
+
+var done = false;
+
+function onPlayerStateChange(event) {
+if (event.data == YT.PlayerState.PLAYING && !done) {
+  // setTimeout(stopVideo, 6000);
+  done = true;
+}
+else if(event.data == YT.PlayerState.ENDED)
+{
+  location.reload();
+}
+}
+
+function onPlayerReady(event) {
+
+//if(typeof(SONG.getArtistId()) == undefined)
+//{
+//  console.log("undefineeeed"); 
+//} 
+//event.target.playVideo();   
+}
+function catchError(event)
+{
+if(event.data == 100) console.log("De video bestaat niet meer");
+}
+
+function stopVideo() {
+player.stopVideo();
+}
+
+var loadPlayer = function(){
+
+	   //    var tag = document.createElement('script');
+
+	   //    tag.src = "https://www.youtube.com/iframe_api";
+	   //    var firstScriptTag = document.getElementsByTagName('script')[0];
+	   //    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	   //    var done = false;
+
+		  // onYouTubeIframeAPIReady(playlist,video);
+	      
+	   //    $('body').append(tag);
+
+		var tag = document.createElement('script');
+
+		tag.src = "https://www.youtube.com/iframe_api";
+
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		 
+		window.onYouTubePlayerAPIReady = function() {
+     		onYouTubePlayer();
+    	};
 }
 
 var slideOutTop = function(){
-	$("#cat-image").addClass("slide-out hidden");
-	$("#info").addClass("slide-out hidden");
-}
-
-var addPlayer = function(){
-			// 2. This code loads the IFrame Player API code asynchronously.
-	      // console.log(playlist);
-	      var tag = document.createElement('script');
-
-	      tag.src = "https://www.youtube.com/iframe_api";
-	      var firstScriptTag = document.getElementsByTagName('script')[0];
-	      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-	      // 3. This function creates an <iframe> (and YouTube player)
-	      //    after the API code downloads.
-	      var done = false;
-
-	      //todo use the playlist arg instead
-			
-		  onYouTubeIframeAPIReady(playlist,video);
-	      
-	      // 4. The API will call this function when the video player is ready.
-	      
-
-	      // 5. The API calls this function when the player's state changes.
-	      //    The function indicates that when playing a video (state=1),
-	      //    the player should play for six seconds and then stop.
-	      
-	      $('body').append(tag);
+	$("#welcome").empty();
+	$("#welcome").css("height", "50px");
 }
 
 var searchYoutube = function(){
 	var search = $("#search").val();
 
-	if(playerExists){
+	if(sessionStorage.getItem("playerExists") === "true"){
 		disableSearchButton();
 		console.log("Player already Exists", sessionStorage.getItem('searchType'));
 		if(sessionStorage.getItem('searchType') === "artist" || sessionStorage.getItem('searchType') === "album"){
@@ -366,13 +430,17 @@ var mutePlayer = function(){
 
 var loadPlaylist = function(playlistVal){
 	var search = $("#search").val() + " Acoustic";
-	if(playerExists){
+	if(sessionStorage.getItem("playerExists") === "true"){
 		player.loadPlaylist(playlistVal);
 	}
 	else{
+		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++");
 		//player.loadPlaylist(playlistVal);
 		if(search === ""){
 			search = "Acoustic Kitty"
+		}
+		else{
+			search += " Acoustic"
 		}
 
 		var apiKey = "AIzaSyAdyUe4SKUg4MAl4qpKhHu3ZnWnJTtiy_k";
@@ -393,15 +461,12 @@ var loadPlaylist = function(playlistVal){
 			url: queryURL, 
 			method: 'GET'
 		}).done(function(response){
-			playerExists = true;
-			$("loading").removeClass("hidden");
-			playlist = response.items[0].id.videoId;
-			video = response.items[0].id.videoId;
-			for (var i = 1; i < response.items.length; i++) {
-				playlist += "," + response.items[i].id.videoId;
-			}
-			console.log(playlist);
+			sessionStorage.setItem("playerExists", "true");
+			
 			addPlayer(playlist, video);
+			if(response.items[0].id.videoId !== undefined){
+				player.loadPlaylist(response.items[0].id.videoId);
+			}
 		});
 	}
 }
@@ -417,9 +482,6 @@ var initYoutubeSearchButtons = function(){
 	$("#submit").click(function(e){
 		e.preventDefault();
 		searchYoutube();
-		if(!playerExists){
-			slideOutTop();
-		}
 		//YoutubePlaylist.addPlaylist();
 	});
 
@@ -427,16 +489,28 @@ var initYoutubeSearchButtons = function(){
 
 var disableSearchButton = function(){
 	$("#submit").off();
-	//$("#search").off();
 }
 
 $(document).ready(function(){
+	loadPlayer();
+
+	sessionStorage.setItem("playerExists", "false");
 	initYoutubeSearchButtons();
+
+	$("#submit").one("click", function(){
+		slideOutTop();
+
+		if(sessionStorage.getItem('searchType') === 'track'){
+			setTimeout(function(){
+				YoutubePlaylist.addPlaylist();
+			}, 1000);
+		}
+		
+	});
 
 	$("#mute").click(function(e){
 		e.preventDefault();
 		mutePlayer();
-		player.setPlaybackQuality("suggestedQuality:", "large");
 	});
 
 	$("#load").click(function(e){
