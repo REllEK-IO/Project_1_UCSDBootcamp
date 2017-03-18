@@ -134,6 +134,20 @@ iframe {
   background: white;
 }
 
+#search {
+  margin: 0 auto;
+  height: 40px;
+  width: 60%;
+  margin-top: 1px;
+  border: none;
+  border-top: solid 2px #21455c;
+  border-bottom: solid 2px #21455c;
+  padding: 0px;
+  text-align: center;
+  border-radius: 20px;
+  background: white;
+}
+
 #search:focus {
   outline:none;
 }
@@ -225,12 +239,12 @@ td:last-child {
   box-shadow: inset -1px 0 0 #fff;
 } 
 
-tr {
+/*tr {
   background: url(http://jackrugile.com/images/misc/noise-diagonal.png);  
-}
+}*/
 
 tr:nth-child(odd) td {
-  background: #f1f1f1 url(http://jackrugile.com/images/misc/noise-diagonal.png);  
+  background: #f1f1f1 /*url(http://jackrugile.com/images/misc/noise-diagonal.png)*/;  
 }
 
 tr:last-of-type td {
