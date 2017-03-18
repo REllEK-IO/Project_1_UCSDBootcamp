@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="assets/js/dependencies/lodash.js"></script>
 	<script type="text/javascript" src="assets/js/dependencies/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/dependencies/jquery-ui.js"></script>
+	<script type="text/javascript" src="assets/js/scripts.js"></script>
 	<script type="text/javascript" src="assets/js/lastFM.js"></script>
 	<script type="text/javascript" src="assets/js/youtubePlayer.js"></script>
 </head>
@@ -48,7 +49,8 @@
 			<button class="btn btn-primary" id="submit">Search</button>
 			<button class="btn btn-primary" id="mute">Mute</button>
 			<button class="btn btn-primary" id="load">Load</button>
-			<table class="table hidden" id="resultArea">
+			
+			<table class="table hidden" id="songList">
 				<tr>
 					<th>
 						Icon
@@ -58,6 +60,12 @@
 					</th>
 					<th>
 						Song
+					</th>
+					<th>
+						Stream Page
+					</th>
+					<th>
+						Add to Platlist
 					</th>
 				</tr>
 			</table>

@@ -1,29 +1,9 @@
-//Object
-var Song = function(){
-	
-}
-
-var createSearchResults = function(stuff){
-	console.log(queryURL);
-}
-
-var search = "Apple";
-var apiKey = "AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY";
-
-var queryURL = "https://www.googleapis.com/youtube/v3/search?" + 
-       //"part=snippet" +
-        //Orders by view count
-        //"&order=viewCount" +
-        "&q=" + encodeURI(search) +
-        "&part=player" +
-        //Type is video
-        //"&type=video" + 
-        //Video has hugh defintion
-        //"&videoDefinition=high";
-        "&key=" + apiKey;
-        //https://www.googleapis.com/youtube/v3/search?q=cat&part=snippet&key=AIzaSyC6KOmJ_6LXQJg_fa5qwpl1L20JWwW-NiY
-
-$.ajax({
-		url: queryURL, 
-		method: 'GET'
-}).done(createSearchResults);
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDzpoNg23Bag7EtcP0-YEy0mU6niuZa4ns",
+    authDomain: "acoustic-kitty-17840.firebaseapp.com",
+    databaseURL: "https://acoustic-kitty-17840.firebaseio.com",
+    storageBucket: "acoustic-kitty-17840.appspot.com",
+    messagingSenderId: "459673901585"
+  };
+  firebase.initializeApp(config);

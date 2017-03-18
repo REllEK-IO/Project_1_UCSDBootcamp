@@ -1,7 +1,6 @@
 
 //Test Vars
-var artistURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=cher&api_key=932e4c349b7caae7626ea15a10649e1f&format=json";
-var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=932e4c349b7caae7626ea15a10649e1f&artist=Cher&album=Believe&format=json";
+
 
 //If album/artist is searched Add this object to DOM
 
@@ -37,7 +36,10 @@ var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=9
 // });
 
 $(document).ready(function(){
+
     (function ($) {
+        
+
         /**
          * Callback function that render the calculate elements on ret.
          */
@@ -53,7 +55,7 @@ $(document).ready(function(){
          *
          * Possible elements are: 'artist', 'album' adn 'track'.
          */
-            moduleList = ["track", "artist"],
+            moduleList = ["track", "artist", "album"],
 
         /**
          * Auxiliar moduleList struct that keeps track of what modules have been
@@ -164,7 +166,7 @@ $(document).ready(function(){
                 optionSet;
 
             console.log(baseUrl);
-
+            
             for (key in moduleList) {
                 if (['artist', 'album', 'track'].indexOf(moduleList[key]) >= 0) {
                     globalResponse = response;
@@ -268,12 +270,15 @@ $(document).ready(function(){
 
             if (null !== d) {
                 $('#value').html(d.value);
-                $('#category').html(d.category);
-                $('#artist').html(d.artist);
-                $('#musicTitle').html(d.musicTitle);
+                sessionStorage.setItem('tempArtist', d.artist); //sessionStorage.getItem('tempArtist')
+                sessionStorage.setItem('searchType', d.category); //sessionStorage.getItem('searchType')
+                sessionStorage.setItem('tempMusicName', d.musicTitle); //sessionStorage.getItem('tempMusicName')
+
                 $('#label').html('<pre>' + d.label + '</pre>');
                 $('#data').html(d.data);
                 $('#lastfm').html(JSON.stringify(d.lastfm));
+
+                console.log("<<<<<<<<<<<<<<    " + d.category + "     >>>>>>>>>>>>>>>>>");
             }
         }
 
@@ -286,17 +291,17 @@ $(document).ready(function(){
             };
 
             // See what modules, among ['artist', 'album', 'track'], are checked.
-            var modules = [];
-            $('.music-type').each(function(key, value) {
-                if ($(this).is(':checked')) {
-                    modules.push($(this).attr('id'));
-                }
+            var modules = ['track' , 'artist', 'album'];
+            // $('.music-type').each(function(key, value) {
+            //     if ($(this).is(':checked')) {
+            //         modules.push($(this).attr('id'));
+            //     }
 
-                //Additional check
-                if(modules.length >= 3){
-                    modules = ['artist', 'album', 'track'];
-                }
-            });
+            //     //Additional check
+            //     if(modules.length >= 3){
+            //         modules = ['artist', 'album', 'track'];
+            //     }
+            // });
             acOptions.modules = modules;
 
             // if lfmAutocomplete is already placed, remove it.
