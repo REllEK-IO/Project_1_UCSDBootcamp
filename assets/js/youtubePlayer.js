@@ -97,7 +97,7 @@ var SongList = function(searchTerm,typeOfSearch){
 
     this.fillSongList = function(){
         if(typeOfSearch === "artist"){
-            var artistURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + self.search + "&api_key=932e4c349b7caae7626ea15a10649e1f&format=json";
+            var artistURL = "https://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + self.search + "&api_key=932e4c349b7caae7626ea15a10649e1f&format=json";
             
             $.ajax({
                 url: artistURL, 
@@ -123,7 +123,7 @@ var SongList = function(searchTerm,typeOfSearch){
             });
         }
         else if(typeOfSearch === "album"){
-            var albumURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=932e4c349b7caae7626ea15a10649e1f&artist="+ self.search + "&album=" + self.searchNext + "&format=json";
+            var albumURL = "https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=932e4c349b7caae7626ea15a10649e1f&artist="+ self.search + "&album=" + self.searchNext + "&format=json";
 
             $.ajax({
                 url: albumURL, 

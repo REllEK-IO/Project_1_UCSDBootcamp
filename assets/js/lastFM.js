@@ -161,7 +161,7 @@ $(document).ready(function(){
          * Make a set of requests to Last.fm API.
          */
         function makeRequestSet(request, response) {
-            var baseUrl = 'http://ws.audioscrobbler.com/2.0/',
+            var baseUrl = 'https://ws.audioscrobbler.com/2.0/',
                 key,
                 optionSet;
 
