@@ -169,9 +169,7 @@ var Song = function(name, artist){
 	self = this;
 
 	this.getSongId = function(){
-		var search = self.songName + " " + self.artistName + " Acoustic";
-
-		console.log("What the fucK: " + search);
+		var search = self.songName + " " + self.artistName + " Acoustic -lyrics -live";
 
 		if(search === ""){
 			search = "Acoustic Kitty"
@@ -420,8 +418,10 @@ var loadPlaylist = function(playlistVal){
 			search = "Acoustic Kitty"
 		}
 		else{
-			search += " Acoustic"
+			search += " Acoustic -lyrics -live"
 		}
+
+		console.log("++++++++++++++++++" + search);
 
 		var apiKey = "AIzaSyAdyUe4SKUg4MAl4qpKhHu3ZnWnJTtiy_k";
 		var queryURL = "https://www.googleapis.com/youtube/v3/search?" + 
@@ -433,8 +433,10 @@ var loadPlaylist = function(playlistVal){
 	    "&type=video" +
 	    "&videoEmbeddable=true" +
 	    "&videoSyndicated=true" +
+	    "&order=viewCount" +
 	    "&topicId=/m/04rlf" +
 	    "&key=" + apiKey;
+
 
 	    //Trouble shooting IDs: ('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
 		$.ajax({
