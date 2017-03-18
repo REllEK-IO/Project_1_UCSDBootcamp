@@ -514,6 +514,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		// loadPlaylist('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
 		YoutubePlaylist.addPlaylist();
+		YoutubePlaylist.refreshPlaylist();
 	});
 
 	// $("#save").click(function(e){
