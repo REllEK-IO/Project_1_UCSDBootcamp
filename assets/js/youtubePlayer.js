@@ -46,6 +46,7 @@ var SongList = function(searchTerm,typeOfSearch){
 
         var labels = $("<tr>").append($("<th>").html("Icon"))
 							.append($("<th>").html("Artist"))
+							.append($("<th>").html("Song"))
 							.append($("<th>").html("Stream Page"))
 							.append($("<th>").html("Add to Playlist"))
 		$("#songList").append(labels);
@@ -153,20 +154,13 @@ var SongList = function(searchTerm,typeOfSearch){
     }(); 
 }
 
+//Song Object, contains a single api call to youtube to obtain a @this.id
+//
+//@name is the name of the song @artist is the name of the song's artist
 var Song = function(name, artist){
 	this.songName = name;
 	this.artistName = artist;
-	// if(this.songName !== ""){
-	// 	this.songName = sessionStorage.getItem('tempMusicName');
-	// }
-	// this.artistName;
-	// if(this.artistName === ""){
-	// 	this.artistName = sessionStorage.getItem('tempArtist');
-	// }
-	// else{
 
-	// 	this.artistName = "Unknown";
-	// }
 	sessionStorage.setItem('tempMusicName', '');
 	sessionStorage.setItem('tempArtist', '');
 
@@ -209,12 +203,14 @@ var Song = function(name, artist){
 			else{
 				self.id = response.items[0].id.videoId;
 			}
-			console.log("+++++++++++ " + self.id + "	++++++++++++++++ " + response.items.length);
 			YoutubePlaylist.refreshPlaylist();
 		});
 	}();
 }
 
+//Object Wrapper for the playlist table
+//
+//Holds song objects as an array the joins their ids to create a Youtube Playlist
 var Playlist = function(){
 	this.playlistItems = [];
 	self = this;
@@ -235,7 +231,8 @@ var Playlist = function(){
 		//Default labels for after empty
 		var labels = $("<tr>").append($("<th>").html("Title"))
 							.append($("<th>").html("Artist"))
-							.append($("<th>").html("X"))
+							.append($("<th>").html("ID"))
+							.append($("<th>").html("Remove"))
 		$("#playlistTable").append(labels);
 
 		//Populate playlist table with playlistItems content
@@ -243,8 +240,17 @@ var Playlist = function(){
 			$("#playlistTable").append($("<tr>").append($("<th>").html(this.playlistItems[i].songName))
 												.append($("<th>").html(this.playlistItems[i].artistName))
 												.append($("<th>").html(this.playlistItems[i].id))
+												.append($("<th>").html("<span class='red' index='" + i +"'>X</span>"))
 			);
 		}
+
+		$(".red").click(function(){
+			var remove = Number($(this).attr("index"));
+			YoutubePlaylist.playlistItems = YoutubePlaylist.playlistItems.splice(remove, 1);
+			$(this).removeClass();
+			$(this).off();
+			$(this).addClass("true-red");
+		})
 	}
 
 	//Refreshes player with current playlist
@@ -288,35 +294,14 @@ var Playlist = function(){
 	}
 }
 
-// function onYouTubeIframeAPIReady() {
-//     player = new YT.Player('player', {
-//       height: '390',
-//       width: '640',
-//       videoId: video,
-//       playerVars: {		modestbranding: 1, autoplay: 0, showinfo: 1},
-//       events: {
-//         'onReady': function (event) {
-// 	        event.target.playVideo();
-// 	      },
-//         'onStateChange': function (event) {
-// 	        if (event.data == YT.PlayerState.PLAYING && !done) {
-// 	          setTimeout(function () {
-// 		        player.stopVideo();
-// 		      }, 6000);
-// 	          done = true;
-// 	        }
-// 	      }
-//       }
-
-//     });
-// }
-
+//Creates the Youtube player object and sets it to @player
 function onYouTubePlayer() {
   player = new YT.Player('player', {
     height: '490',
     width: '880',
     videoId: "xBfBYfPNXqE",
-    playerVars: { rel:0,loop:1,modestbranding: 1,controls:1, showinfo: 1, rel: 0, showsearch: 0, autoplay:1, iv_load_policy:3 },
+    //Big list of control variables for the youtube player
+    playerVars: { rel:0,modestbranding: 1,controls:1, showinfo: 1, rel: 0, showsearch: 0, autoplay:1, iv_load_policy:3 },
     events: {
       'onStateChange': onPlayerStateChange,
       'onError': catchError
@@ -324,19 +309,18 @@ function onYouTubePlayer() {
   });
 }
 
+//Youtube API control variable for onPlayerStateChange
 var done = false;
 
+
 function onPlayerStateChange(event) {
-if (event.data == YT.PlayerState.PLAYING && !done) {
-  // setTimeout(stopVideo, 6000);
-  done = true;
-}
-else if(event.data == YT.PlayerState.ENDED)
-{
-  location.reload();
-}
+	if (event.data == YT.PlayerState.PLAYING && !done) {
+	  // setTimeout(stopVideo, 6000);
+	  done = true;
+	}
 }
 
+//Need this call to stop errors
 function onPlayerReady(event) {
 
 //if(typeof(SONG.getArtistId()) == undefined)
@@ -345,29 +329,20 @@ function onPlayerReady(event) {
 //} 
 //event.target.playVideo();   
 }
+
+//If the player crashes
 function catchError(event)
 {
-if(event.data == 100) console.log("De video bestaat niet meer");
+if(event.data == 100) console.log("The player fucked up");
 }
 
+//Call for the player to stop
 function stopVideo() {
 player.stopVideo();
 }
 
+//Loads in the script needed for the youtube player
 var loadPlayer = function(){
-
-	   //    var tag = document.createElement('script');
-
-	   //    tag.src = "https://www.youtube.com/iframe_api";
-	   //    var firstScriptTag = document.getElementsByTagName('script')[0];
-	   //    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-	   //    var done = false;
-
-		  // onYouTubeIframeAPIReady(playlist,video);
-	      
-	   //    $('body').append(tag);
-
 		var tag = document.createElement('script');
 
 		tag.src = "https://www.youtube.com/iframe_api";
@@ -381,17 +356,20 @@ var loadPlayer = function(){
     	};
 }
 
+//Removes top content to make room for player
 var slideOutTop = function(){
 	$("#welcome").empty();
 	$("#welcome").css("height", "50px");
 }
 
+//
 var searchYoutube = function(){
 	var search = $("#search").val();
 
 	if(sessionStorage.getItem("playerExists") === "true"){
 		disableSearchButton();
-		console.log("Player already Exists", sessionStorage.getItem('searchType'));
+		// console.log("Player already Exists", sessionStorage.getItem('searchType'));
+
 		if(sessionStorage.getItem('searchType') === "artist" || sessionStorage.getItem('searchType') === "album"){
 			PossibleSongs = new SongList([sessionStorage.getItem('tempArtist'),sessionStorage.getItem('tempMusicName')],sessionStorage.getItem('searchType'));
 		}

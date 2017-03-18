@@ -275,13 +275,31 @@ footer {
   font-size: 16px;
 }
 
-.add-song: {
+.add-song {
   font-size: 30px !important;;
 }
 
 .add-song:hover {
     cursor: pointer;
-    color: #83e483;
+    color: #43d643;
+}
+
+.red{
+    font-size: 22px;
+    float: right;
+    margin-right: 23px;
+}
+
+.red:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.true-red{
+  color:red;
+}
+.true-red:hover{
+  cursor: not-allowed;
 }
 
 .slide-out {
