@@ -1,9 +1,11 @@
-var player;
-var video = "";
-var playlist = "";
+// var player;
+// var video = "";
+// var playlist = "";
 // var searchType = "track";
 // var tempArtist = "";
 // var tempMusicName = "";
+
+var databaseLength;
 
 sessionStorage.setItem('tempArtist', ""); //sessionStorage.getItem('tempArtist')
 sessionStorage.setItem('searchType', "track"); //sessionStorage.getItem('searchType')
@@ -290,7 +292,7 @@ var Playlist = function(){
 				this.playlistCondensed += "," + this.playlistItems[i].id;
 			}
 		}
-		database.ref().push({	"test":this.playlistCondensed	});
+		return this.playlistCondensed;
 	}
 }
 
@@ -412,7 +414,7 @@ var loadPlaylist = function(playlistVal){
 		player.loadPlaylist(playlistVal);
 	}
 	else{
-		console.log("+++++++++++++++++++++++++++++++++++++++++++++++++");
+		// console.log("+++++++++++++++++++++++++++++++++++++++++++++++++");
 		//player.loadPlaylist(playlistVal);
 		if(search === ""){
 			search = "Acoustic Kitty"
@@ -434,14 +436,13 @@ var loadPlaylist = function(playlistVal){
 	    "&topicId=/m/04rlf" +
 	    "&key=" + apiKey;
 
-	    //addPlayer('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
+	    //Trouble shooting IDs: ('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
 		$.ajax({
 			url: queryURL, 
 			method: 'GET'
 		}).done(function(response){
 			sessionStorage.setItem("playerExists", "true");
 			
-			addPlayer(playlist, video);
 			if(response.items[0].id.videoId !== undefined){
 				player.loadPlaylist(response.items[0].id.videoId);
 			}
@@ -449,10 +450,26 @@ var loadPlaylist = function(playlistVal){
 	}
 }
 
-// var p = 'NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE';
-// addPlayer(p);
-
 var YoutubePlaylist = new Playlist();
+
+// var savePlayistButton = function(){
+// 	database.ref().child("playlist").on("value", function(snapshot) {
+//   		databaseLength = Number(snapshot.numChildren());
+//   		console.log(databaseLength);
+  		
+// 	});
+
+// 	// database.ref().
+// 	var currentList = YoutubePlaylist.savePlayist();
+
+// }
+
+// var loadFireBasePlaylist = function(){
+// 	ref.child("playlist").on("value", function(snapshot) {
+//   		databaseLength = Number(snapshot.numChildren());
+  		
+// 	});
+// }
 
 var initYoutubeSearchButtons = function(){
 	$("#search").val("");
@@ -496,5 +513,10 @@ $(document).ready(function(){
 		// loadPlaylist('NS0txu_Kzl8,5dsGWM5XGdg,tntOCGkgt98,M7lc1UVf-VE');
 		YoutubePlaylist.addPlaylist();
 	});
+
+	// $("#save").click(function(e){
+	// 	e.preventDefault();
+	// 	savePlayistButton();
+	// })
 	
 })

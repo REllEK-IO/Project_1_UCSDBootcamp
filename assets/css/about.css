@@ -122,7 +122,16 @@ body {
  margin-left: 37%;
 }
 
+.headerFonts{
+  color: white;
+  text-decoration: none;
+}
 
+.headerFonts:hover{
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 footer {
  color: #fbfdef ;
