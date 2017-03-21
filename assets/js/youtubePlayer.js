@@ -246,7 +246,10 @@ var Playlist = function(){
 
 		$(".red").click(function(){
 			var remove = Number($(this).attr("index"));
+			console.log(remove);
+			
 			YoutubePlaylist.playlistItems = YoutubePlaylist.playlistItems.splice(remove, 1);
+			console.log(YoutubePlaylist.playlistItems);
 			$(this).removeClass();
 			$(this).off();
 			$(this).addClass("true-red");
